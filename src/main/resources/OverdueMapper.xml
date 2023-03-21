@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="xyz.yaunsine.dao.OverdueMapper" >
+  <resultMap id="BaseResultMap" type="xyz.yaunsine.dao.entity.Overdue" >
+    <result column="id" property="id" jdbcType="INTEGER" />
+    <result column="days" property="days" jdbcType="INTEGER" />
+    <result column="rate" property="rate" jdbcType="DOUBLE" />
+  </resultMap>
+  <insert id="insert" parameterType="xyz.yaunsine.dao.entity.Overdue" >
+    insert into tb_overdue (id, days, rate
+      )
+    values (#{id,jdbcType=INTEGER}, #{days,jdbcType=INTEGER}, #{rate,jdbcType=DOUBLE}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="xyz.yaunsine.dao.entity.Overdue" >
+    insert into tb_overdue
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="days != null" >
+        days,
+      </if>
+      <if test="rate != null" >
+        rate,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="days != null" >
+        #{days,jdbcType=INTEGER},
+      </if>
+      <if test="rate != null" >
+        #{rate,jdbcType=DOUBLE},
+      </if>
+    </trim>
+  </insert>
+</mapper>

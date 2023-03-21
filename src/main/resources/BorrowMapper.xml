@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="xyz.yaunsine.dao.BorrowMapper" >
+  <resultMap id="BaseResultMap" type="xyz.yaunsine.dao.entity.Borrow" >
+    <result column="id" property="id" jdbcType="INTEGER" />
+    <result column="bookid" property="bookid" jdbcType="INTEGER" />
+    <result column="userid" property="userid" jdbcType="INTEGER" />
+    <result column="starttime" property="starttime" jdbcType="DATE" />
+    <result column="endtime" property="endtime" jdbcType="DATE" />
+    <result column="stat" property="stat" jdbcType="INTEGER" />
+  </resultMap>
+  <select id="selectAll" resultMap="BaseResultMap">
+    select * from tb_borrow
+  </select>
+  <delete id="deleteById" parameterType="java.lang.Integer">
+    delete from tb_borrow where id = #{id,jdbcType=INTEGER}
+  </delete>
+<!--  确认归还-->
+  <update id="updateStatConfirmReturn" parameterType="java.lang.Integer">
+    update tb_borrow
+    <set>
+      stat = 3
+    </set>
+    where id = #{id}
+  </update>
+<!--  归还图书-->
+  <update id="updateStatReturn" parameterType="java.lang.Integer">
+    update tb_borrow
+    <set>
+      stat = 2
+    </set>
+    where id = #{id}
+  </update>
+<!--  查询用户借书情况-->
+  <select id="selectByUserid" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select * from tb_borrow where userid = #{userid,jdbcType=INTEGER}
+  </select>
+  <insert id="insert" parameterType="xyz.yaunsine.dao.entity.Borrow" >
+    insert into tb_borrow (bookid, userid,
+      starttime, endtime)
+    values (#{bookid,jdbcType=INTEGER}, #{userid,jdbcType=INTEGER},
+      #{starttime,jdbcType=DATE}, #{endtime,jdbcType=DATE})
+  </insert>
+  <insert id="insertSelective" parameterType="xyz.yaunsine.dao.entity.Borrow" >
+    insert into tb_borrow
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="bookid != null" >
+        bookid,
+      </if>
+      <if test="userid != null" >
+        userid,
+      </if>
+      <if test="starttime != null" >
+        starttime,
+      </if>
+      <if test="endtime != null" >
+        endtime,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="bookid != null" >
+        #{bookid,jdbcType=INTEGER},
+      </if>
+      <if test="userid != null" >
+        #{userid,jdbcType=INTEGER},
+      </if>
+      <if test="starttime != null" >
+        #{starttime,jdbcType=DATE},
+      </if>
+      <if test="endtime != null" >
+        #{endtime,jdbcType=DATE},
+      </if>
+    </trim>
+  </insert>
+</mapper>

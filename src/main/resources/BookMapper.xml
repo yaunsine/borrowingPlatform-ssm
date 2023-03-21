@@ -1,0 +1,143 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="xyz.yaunsine.dao.BookMapper" >
+  <resultMap id="BaseResultMap" type="xyz.yaunsine.dao.entity.Book" >
+    <id column="bookid" property="bookid" jdbcType="INTEGER" />
+    <result column="bookname" property="bookname" jdbcType="VARCHAR" />
+    <result column="author" property="author" jdbcType="VARCHAR" />
+    <result column="isbn" property="isbn" jdbcType="VARCHAR" />
+    <result column="typeid" property="typeid" jdbcType="INTEGER" />
+    <result column="imgurl" property="imgurl" jdbcType="VARCHAR" />
+    <result column="publisher" property="publisher" jdbcType="VARCHAR" />
+    <result column="subtime" property="subtime" jdbcType="DATE" />
+    <result column="counts" property="counts" jdbcType="INTEGER" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    bookid, bookname, author, isbn, typeid, imgurl, publisher,subtime,counts
+  </sql>
+  <update id="updateCountsAdd" parameterType="java.lang.Integer">
+    update tb_book
+    <set >
+      counts = counts+1
+    </set>
+    where bookid = #{bookid,jdbcType=INTEGER}
+  </update>
+  <update id="updateCountsMinus" parameterType="java.lang.Integer">
+    update tb_book
+    <set >
+        counts = counts-1
+    </set>
+    where bookid = #{bookid,jdbcType=INTEGER}
+  </update>
+<!--  查询类型书籍-->
+  <select id="selectByTypeid" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select * from tb_book where typeid = #{typeid,jdbcType=INTEGER};
+  </select>
+  <select id="selectCountById" parameterType="java.lang.Integer" resultType="java.lang.Integer">
+    select COUNT(*) from tb_book where typeid = #{typeid,jdbcType=INTEGER}
+  </select>
+  <select id="selectAll" resultMap="BaseResultMap">
+    select * from tb_book order by subtime desc
+  </select>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from tb_book
+    where bookid = #{bookid,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from tb_book
+    where bookid = #{bookid,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="xyz.yaunsine.dao.entity.Book" >
+    insert into tb_book ( bookname, author,
+      isbn, typeid, imgurl, 
+      publisher,subtime,counts)
+    values ( #{bookname,jdbcType=VARCHAR}, #{author,jdbcType=VARCHAR},
+      #{isbn,jdbcType=VARCHAR}, #{typeid,jdbcType=INTEGER}, #{imgurl,jdbcType=VARCHAR}, 
+      #{publisher,jdbcType=VARCHAR},#{subtime,jdbcType=DATE},#{counts,jdbcType=INTEGER})
+  </insert>
+  <insert id="insertSelective" parameterType="xyz.yaunsine.dao.entity.Book" >
+    insert into tb_book
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="bookid != null" >
+        bookid,
+      </if>
+      <if test="bookname != null" >
+        bookname,
+      </if>
+      <if test="author != null" >
+        author,
+      </if>
+      <if test="isbn != null" >
+        isbn,
+      </if>
+      <if test="typeid != null" >
+        typeid,
+      </if>
+      <if test="imgurl != null" >
+        imgurl,
+      </if>
+      <if test="publisher != null" >
+        publisher,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="bookid != null" >
+        #{bookid,jdbcType=INTEGER},
+      </if>
+      <if test="bookname != null" >
+        #{bookname,jdbcType=VARCHAR},
+      </if>
+      <if test="author != null" >
+        #{author,jdbcType=VARCHAR},
+      </if>
+      <if test="isbn != null" >
+        #{isbn,jdbcType=VARCHAR},
+      </if>
+      <if test="typeid != null" >
+        #{typeid,jdbcType=INTEGER},
+      </if>
+      <if test="imgurl != null" >
+        #{imgurl,jdbcType=VARCHAR},
+      </if>
+      <if test="publisher != null" >
+        #{publisher,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="xyz.yaunsine.dao.entity.Book" >
+    update tb_book
+    <set >
+      <if test="bookname != null" >
+        bookname = #{bookname,jdbcType=VARCHAR},
+      </if>
+      <if test="author != null" >
+        author = #{author,jdbcType=VARCHAR},
+      </if>
+      <if test="isbn != null" >
+        isbn = #{isbn,jdbcType=VARCHAR},
+      </if>
+      <if test="typeid != null" >
+        typeid = #{typeid,jdbcType=INTEGER},
+      </if>
+      <if test="imgurl != null" >
+        imgurl = #{imgurl,jdbcType=VARCHAR},
+      </if>
+      <if test="publisher != null" >
+        publisher = #{publisher,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where bookid = #{bookid,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="xyz.yaunsine.dao.entity.Book" >
+    update tb_book
+    set bookname = #{bookname,jdbcType=VARCHAR},
+      author = #{author,jdbcType=VARCHAR},
+      isbn = #{isbn,jdbcType=VARCHAR},
+      typeid = #{typeid,jdbcType=INTEGER},
+      imgurl = #{imgurl,jdbcType=VARCHAR},
+      publisher = #{publisher,jdbcType=VARCHAR}
+    where bookid = #{bookid,jdbcType=INTEGER}
+  </update>
+</mapper>
